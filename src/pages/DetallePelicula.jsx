@@ -77,7 +77,7 @@ const DetallePelicula = () => {
       <Modal show={showModal} onClose={() => setShowModal(false)}>
         <Modal.Header>Trailer de {detallePeli.title}</Modal.Header>
         <Modal.Body>
-          <div className="aspect-w-16 aspect-h-9">
+          <div className="aspect-w-16 aspect-h-9"> 
             {trailer ? (
               <iframe
               src={`https://www.youtube.com/embed/${trailer.key}`}

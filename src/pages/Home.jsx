@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { buscarPelis, fetchPeliculas } from "../services/api";
 import PeliculasContainer from "../components/PeliculasContainer";
-import Header from "../components/BarraBusqueda";
+import BarraBusqueda from "../components/BarraBusqueda";
 import NavBar from "../components/NavBar";
 import Paginacion from "../components/Paginacion";
 
@@ -28,23 +28,18 @@ const Home = () => {
     if (busqueda.trim() === "") {
       const peliculas = await fetchPeliculas();
       setPeliculas(peliculas);
-      setPaginaActual(1); // Resetear a la primera página
+      setPaginaActual(1); // Resetear la primer pag
     } else {
       const resultados = await buscarPelis(busqueda);
       setPeliculas(resultados.results);
-      setPaginaActual(1); // Resetear a la primera página
+      setPaginaActual(1); // Resetear la primer pag
     }
   };
 
-  // Calcular el índice de las películas a mostrar
-  // Este código toma el arreglo peliculas y obtiene una sub-matriz de las películas que corresponden a la página actual.
-// Con los índices primeraPag y ultimaPag, obtenemos las películas correctas para la página en cuestión. Por ejemplo, si estamos en la página 2, se tomarán las películas desde el índice 6 hasta el índice 11 (es decir, las películas 7-12).
-  const ultimaPag = paginaActual * peliculasPorPagina;
-  const primeraPag = ultimaPag - peliculasPorPagina;
-  const peliculasActuales = peliculas.slice(
-    primeraPag,
-    ultimaPag
-  );
+  //PAGINACION
+  const ultimaPag = paginaActual * peliculasPorPagina; //indice de la ultima peli que se va a mostrar
+  const primeraPag = ultimaPag - peliculasPorPagina;  //indice de la perimera peli que se va a mostrar
+  const peliculasActuales = peliculas.slice(primeraPag,ultimaPag); //array que va a tener las pelis que se van a mostrar en esa pagina 
 
   // Cambiar de página
   const onPageChange = (pageNumber) => {
@@ -52,12 +47,13 @@ const Home = () => {
   };
 
   // Calcular el número total de páginas
-  const totalPages = Math.ceil(peliculas.length / peliculasPorPagina);
+  const pagTotal = Math.ceil(peliculas.length / peliculasPorPagina); //math.celi redondea el nro para arriba
+
 
   return (
     <div className="p-4">
       <NavBar />
-      <Header
+      <BarraBusqueda
         busqueda={busqueda}
         setBusqueda={setBusqueda}
         handleSubmit={handleSubmit}
@@ -65,7 +61,7 @@ const Home = () => {
       <PeliculasContainer peliculas={peliculasActuales} />
       <Paginacion
         paginaActual={paginaActual}
-        totalPages={totalPages}
+        pagTotal={pagTotal}
         onPageChange={onPageChange}
       />
     </div>
